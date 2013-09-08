@@ -33,6 +33,9 @@ class List(Lister):
 
     def get_parser(self, name):
         parser = super(List, self).get_parser(name)
+        parser.add_argument('host', help="Gerrit SSH host or config")
+        parser.add_argument('-p', '--port', default=29418, type=int,
+                            help="Gerrit SSH port")
         parser.add_argument('-l', '--limit', type=int,
                             help="Number of review to retrieve")
         parser.add_argument('--projects', nargs='+')
@@ -48,7 +51,7 @@ class List(Lister):
         return '\n'.join(data)
 
     def take_action(self, parsed_args):
-        rev = reviews.Query('review.openstack.org', 29418)
+        rev = reviews.Query(parsed_args.host, parsed_args.port)
 
         to_filter = []
         if parsed_args.projects:
