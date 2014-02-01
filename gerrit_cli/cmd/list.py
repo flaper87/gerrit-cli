@@ -61,18 +61,22 @@ class List(Lister):
 
         other = filters.Items()
         other.add_items('is', ['open'])
-        other.add_items('limit', parsed_args.limit)
+
+        if parsed_args.limit is not None:
+            other.add_items('limit', parsed_args.limit)
+
         to_filter.append(other)
 
-        columns = ('Subject', 'Project', 'Topic', 'Owner',
+        columns = ('Subject', 'Status', 'Project', 'Topic', 'Owner',
                    'Modified Time', 'Reviews', 'URL')
 
         data = []
         for review in rev.filter(*to_filter):
             last_updated = datetime.fromtimestamp(review['lastUpdated'])
             crvw = self._get_review_votes(review['currentPatchSet'])
-            data.append((review['subject'][:50], review['project'],
-                         review.get('topic'), review['owner']['name'],
-                         last_updated, crvw, review['url']))
+            data.append((review['subject'][:50], review['status'],
+                         review['project'], review.get('topic'),
+                         review['owner']['name'], last_updated, crvw,
+                         review['url']))
 
         return (columns, data)
