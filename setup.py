@@ -28,7 +28,7 @@ setup(
     ],
     scripts=[],
     platforms=['Any'],
-    install_requires=['distribute', 'cliff', 'python-gerrit'],
+    install_requires=['cliff', 'python-gerrit'],
     entry_points={
         'gerrit.cli': [
             'reviews list = gerrit_cli.cmd.list:List',
